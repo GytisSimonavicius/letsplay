@@ -1,53 +1,102 @@
-# my idea is to create a simple blackjack game
-# rules: https://www.blackjackapprenticeship.com/how-to-play-blackjack/
 import random
+import logging
+from cards import suits, ranks, card_values
+#using logging to write to a file named "game.log"
+logging.basicConfig(level=logging.DEBUG,filename='game.log', filemode='w', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', datefmt='%d/%m/%Y %H:%M:%S')
 
-#defining all suits, ranks and the values of the cards
-suits = ('Hearts', 'Diamonds', 'Clubs', 'Spades')
-#defining all ranks 
-ranks = ('Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight',
-         'Nine', 'Ten', 'Jack', 'Queen', 'King', 'Ace')
-#defining the values of the cards
-card_values = {
-    'Two': 2,
-    'Three': 3,
-    'Four': 4,
-    'Five': 5,
-    'Six': 6,
-    'Seven': 7,
-    'Eight': 8,
-    'Nine': 9,
-    'Ten': 10,
-    'Jack': 10,
-    'Quene': 10,
-    'King': 10,
-    'Ace': 11
-}   
+class Card:
+    def __init__(self, rank, suit):
+        self.rank = rank
+        self.suit = suit
+        self.value = card_values[rank]
 
-#generating deck of cards combining suits and ranks
-def generate_deck():
-    count = 0
-    print('Generating deck...\n')
-    deck = [(rank, suit) for suit in suits for rank in ranks]
-#shuffled cars    
-    random.shuffle(deck)
-    for card in deck:
-        print(card)
-        count += 1
-# just in case checking how many cards are in the deck
-    print(f'\n cards in the deck: {count} \n')
-    return deck
+    def __str__(self):
+        return f"{self.rank} of {self.suit}"
 
-#generating the random card from the deck
-def get_random_card():
-    random_card = random.choice(generate_deck())
-    return random_card
+class Deck:
+    def __init__(self):
+        self.cards = []
+        for suit in suits:
+            for rank in ranks:
+                card = Card(rank, suit)
+                self.cards.append(card)
 
-#dealing cards for player ant oponent
+    def shuffle(self):
+        random.shuffle(self.cards)
 
-def get_hand():
+# dealing card from the deck and after that we remove it from the deck
+    def deal_card(self):
+        return self.cards.pop()
+
+#getting (player or oponent) hand from the deck
+class Hand:
+    def __init__(self):
+        self.cards = []
+
+    def add_card(self, card):
+        self.cards.append(card)
+
+    def get_value(self):
+        value = sum(card.value for card in self.cards)
+        num_aces = sum(card.rank == 'Ace' for card in self.cards)
+        while value > 21 and num_aces > 0:
+            value -= 10
+            num_aces -= 1
+        return value
+
+    def __str__(self):
+        return ' and '.join(str(card) for card in self.cards)
+
+class Player:
+    def __init__(self, name):
+        self.name = name
+        self.hand = Hand()
+
+    def add_card_to_hand(self, card):
+        self.hand.add_card(card)
+
+    def get_hand_value(self):
+        return self.hand.get_value()
+
+    def __str__(self):
+        return f"{self.name} hand: {self.hand}"
+
+class User(Player):
+    def __init__(self, name):
+        super().__init__(name)
+
+class Computer(Player):
+    def __init__(self):
+        super().__init__('Computer')
+
+def play_game():
+    logging.info('Generating deck...')
+    deck = Deck()
+
+    # writing the cards in the deck to the log
+    for card in deck.cards:
+        logging.debug(card)
+
+    deck.shuffle()
+
+    # writing the shuffled deck to the log
+    logging.debug('\n Generating deck after shuffling:\n')
+    for card in deck.cards:
+        logging.debug(card)
+
+    user =  User('User')
+    computer = Computer()
+
     for _ in range(2):
-        your_hand = get_random_card()
-        oponent_hand = get_random_card()
-        print(your_hand)
-get_hand()
+        user.add_card_to_hand(deck.deal_card())
+        computer.add_card_to_hand(deck.deal_card())
+    # writing the rest of deck cards to the log
+    logging.debug('\n Just checking how many cards left after cards added to hand:\n')
+    for card in deck.cards:
+        logging.debug(card)
+
+    print(f'{user}')
+    print(f'{computer}')
+
+
+play_game()
