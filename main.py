@@ -1,8 +1,6 @@
 import random
 import logging
 from cards import suits, ranks, card_values
-#using logging to write to a file named "game.log"
-logging.basicConfig(level=logging.DEBUG,filename='game.log', filemode='w', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', datefmt='%d/%m/%Y %H:%M:%S')
 
 class Card:
     def __init__(self, rank, suit):
@@ -83,20 +81,41 @@ def play_game():
     logging.debug('\n Generating deck after shuffling:\n')
     for card in deck.cards:
         logging.debug(card)
-
-    user =  User('User')
+    
+    user =  User(user_name)
     computer = Computer()
 
     for _ in range(2):
         user.add_card_to_hand(deck.deal_card())
         computer.add_card_to_hand(deck.deal_card())
+
+    get_hand_value_user = user.get_hand_value()
+    get_hannd_value_computer = computer.get_hand_value()
+
     # writing the rest of deck cards to the log
     logging.debug('\n Just checking how many cards left after cards added to hand:\n')
     for card in deck.cards:
         logging.debug(card)
 
-    print(f'{user}')
-    print(f'{computer}')
+    print(f'{user}, hand value: {get_hand_value_user}')
+    print(f'{computer}, hand value: {get_hannd_value_computer}')
 
 
-play_game()
+
+if __name__ == '__main__':
+    #using logging to write to a file named "game.log"
+    logging.basicConfig(level=logging.DEBUG,filename='game.log', filemode='w', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', datefmt='%d/%m/%Y %H:%M:%S')
+
+    print('Welcome to Blackjack game!')
+    user_name = input('Enter your name: ')
+    answer = input('Do you want to play blackjack? (yes or no) ')
+    
+    if answer.lower() == "yes":
+        play_game()
+    else:
+        print('Thanks for your time!')
+        logging.info('Person didnt play the game')
+
+#need to write a function to check if the user has won the game or not
+#need to make user to be able to hit or stay
+#need to update with error handling
