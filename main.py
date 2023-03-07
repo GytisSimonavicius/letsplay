@@ -25,23 +25,29 @@ card_values = {
 }   
 
 #generating deck of cards combining suits and ranks
-def generate_full_deck():
+def generate_deck():
     count = 0
     print('Generating deck...\n')
-    deck = [(suit, rank) for suit in suits for rank in ranks]
+    deck = [(rank, suit) for suit in suits for rank in ranks]
+#shuffled cars    
     random.shuffle(deck)
     for card in deck:
-        print(f'{card[1]} of {card[0]}')
+        print(card)
         count += 1
 # just in case checking how many cards are in the deck
-    print(f'\nTotal cards: {count} in the deck \n')
+    print(f'\n cards in the deck: {count} \n')
     return deck
 
+#generating the random card from the deck
 def get_random_card():
-    random_card = random.choice(list(generate_full_deck()))
-    print(f'Random card is: {random_card[1]} of {random_card[0]}')
-    if random_card[1] in card_values.keys():
-        print (f'Card score is {card_values[random_card[1]]}')
-generate_full_deck()
-get_random_card()    
+    random_card = random.choice(generate_deck())
+    return random_card
 
+#dealing cards for player ant oponent
+
+def get_hand():
+    for _ in range(2):
+        your_hand = get_random_card()
+        oponent_hand = get_random_card()
+        print(your_hand)
+get_hand()
