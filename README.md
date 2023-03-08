@@ -8,5 +8,5 @@ After that program asks player to hit or stay until their hand value exceeds 21 
 After user has completed their turn, the computer takes their turn, hitting until their hand value exceeds 17. 
 After that program compares the hand values of the user and computer to determine the winner.
 
-How to star:
-``python main.py
+How to start a program:
+    python main.py

@@ -101,7 +101,7 @@ def play_game():
         deck.shuffle()
 
         # writing the shuffled deck to the log
-        logging.debug('\n Generating deck after shuffling:\n')
+        logging.debug('\n  Deck after shuffling:\n')
         for card in deck.cards:
             logging.debug(card)
         
