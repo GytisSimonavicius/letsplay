@@ -62,6 +62,20 @@ class Player:
 class User(Player):
     def __init__(self, name):
         super().__init__(name)
+    
+    def hit_or_stay(self, deck):
+        while True:
+            decision = input("Do you want to hit or stay? \n")
+            if decision.lower() == "hit":
+                self.add_card_to_hand(deck.deal_card())
+                print(f"{self}, hand value: {self.get_hand_value()}\n")
+                if self.get_hand_value() > 21:
+                    print("Over 21! Computer wins.\n")
+                    return False
+            elif decision.lower() == "stay":
+                return True
+            else:
+                print("Invalid input. Please enter 'hit' or 'stay'.\n")
 
 class Computer(Player):
     def __init__(self):
@@ -85,10 +99,14 @@ def play_game():
     user =  User(user_name)
     computer = Computer()
 
+    card_count = 0
     for _ in range(2):
+        card_count += 1
         user.add_card_to_hand(deck.deal_card())
+        logging.debug(f"{card_count} {user.name} card: {user.hand}")
         computer.add_card_to_hand(deck.deal_card())
-
+        logging.debug(f"{card_count} computer card: {computer.hand}")
+                
     get_hand_value_user = user.get_hand_value()
     get_hannd_value_computer = computer.get_hand_value()
 
@@ -100,6 +118,19 @@ def play_game():
     print(f'{user}, hand value: {get_hand_value_user}')
     print(f'{computer}, hand value: {get_hannd_value_computer}')
 
+    if user.hit_or_stay(deck):
+        while computer.get_hand_value() < 17:
+            computer.add_card_to_hand(deck.deal_card())
+        print(f"{user}, hand value: {user.get_hand_value()}\n")
+        print(f"{computer}, hand value: {computer.get_hand_value()}\n")
+        if computer.get_hand_value() > 21:
+            print(f"Over 21! {user} wins.\n")
+        elif computer.get_hand_value() > user.get_hand_value():
+            print("Computer wins.\n")
+        elif computer.get_hand_value() == user.get_hand_value():
+            print("Tie!")
+        else:
+            print(f"{user} wins.\n")
 
 
 if __name__ == '__main__':
@@ -108,13 +139,15 @@ if __name__ == '__main__':
 
     print('Welcome to Blackjack game!')
     user_name = input('Enter your name: ')
-    answer = input('Do you want to play blackjack? (yes or no) ')
+    answer = input('Do you want to play blackjack? (yes or no) \n')
     
-    if answer.lower() == "yes":
+    if answer.lower() == 'yes':
         play_game()
-    else:
+    elif answer.lower() == 'no':
         print('Thanks for your time!')
         logging.info('Person didnt play the game')
+    else:
+        pass
 
 #need to write a function to check if the user has won the game or not
 #need to make user to be able to hit or stay
