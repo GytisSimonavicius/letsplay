@@ -65,94 +65,103 @@ class User(Player):
     
     def hit_or_stay(self, deck: str):
         while True:
-            decision = input("Do you want to hit or stay? \n")
-            if decision.lower() == "hit":
-                self.add_card_to_hand(deck.deal_card())
-                print(f"\n{self}, hand value: {self.get_hand_value()}\n")
-                if self.get_hand_value() > 21:
-                    print("Over 21! Computer wins.\n")
-                    return False
-            elif decision.lower() == "stay":
-                return True
-            else:
-                print("Invalid input. Please enter 'hit' or 'stay'.\n")
+            try:
+                decision = input("Do you want to hit or stay? \n")
+                if decision.lower() == "hit":
+                    self.add_card_to_hand(deck.deal_card())
+                    print(f"\n{self}, hand value: {self.get_hand_value()}\n")
+                    if self.get_hand_value() > 21:
+                        print("Over 21! Computer wins.\n")
+                        return False
+                elif decision.lower() == "stay":
+                    return True
+                else:
+                    print("Invalid input. Please enter 'hit' or 'stay'.\n")
+            except Exception as e:
+                print(f'Error: {e}')
+                logging.error(f'An error occurred: {e}')
+
 
 class Computer(Player):
     def __init__(self):
         super().__init__('Computer')
-
+    
 def play_game():
-    logging.info('Generating deck...')
-    deck = Deck()
+    try:
+        logging.info('Generating deck...')
+        deck = Deck()
 
-    # writing the cards in the deck to the log
-    for card in deck.cards:
-        logging.debug(card)
+        # writing the cards in the deck to the log
+        for card in deck.cards:
+            logging.debug(card)
 
-    deck.shuffle()
+        deck.shuffle()
 
-    # writing the shuffled deck to the log
-    logging.debug('\n Generating deck after shuffling:\n')
-    for card in deck.cards:
-        logging.debug(card)
-    
-    user =  User(user_name)
-    computer = Computer()
+        # writing the shuffled deck to the log
+        logging.debug('\n Generating deck after shuffling:\n')
+        for card in deck.cards:
+            logging.debug(card)
+        
+        user =  User(user_name)
+        computer = Computer()
 
-    card_count = 0
-    for _ in range(2):
-        card_count += 1
-        user.add_card_to_hand(deck.deal_card())
-        logging.debug(f"{card_count} {user.name} card: {user.hand}")
-        computer.add_card_to_hand(deck.deal_card())
-        logging.debug(f"{card_count} computer card: {computer.hand}")
-                
-    get_hand_value_user = user.get_hand_value()
-    get_hannd_value_computer = computer.get_hand_value()
-
-    # writing the rest of deck cards to the log
-    logging.debug('\n Just checking how many cards left after cards added to hand:\n')
-    for card in deck.cards:
-        logging.debug(card)
-
-    print(f'{user}, hand value: {get_hand_value_user}')
-    print(f'{computer}, hand value: {get_hannd_value_computer}')
-
-    if get_hand_value_user == 21:
-        print(f"{user} wins.\n")
-        return
-    
-    if user.hit_or_stay(deck):
-        while computer.get_hand_value() < 17:
+        card_count = 0
+        for _ in range(2):
+            card_count += 1
+            user.add_card_to_hand(deck.deal_card())
+            logging.debug(f"{card_count} {user.name} card: {user.hand}")
             computer.add_card_to_hand(deck.deal_card())
-        print(f"{user}, hand value: {user.get_hand_value()}\n")
-        print(f"{computer}, hand value: {computer.get_hand_value()}\n")
-        if computer.get_hand_value() > 21:
-            print(f"Over 21! {user} wins.\n")
-        elif computer.get_hand_value() > user.get_hand_value():
-            print("Computer wins.\n")
-        elif computer.get_hand_value() == user.get_hand_value():
-            print("Tie!")
-        else:
-            print(f"{user} wins.\n")
+            logging.debug(f"{card_count} computer card: {computer.hand}")
+                    
+        get_hand_value_user = user.get_hand_value()
+        get_hannd_value_computer = computer.get_hand_value()
 
+        # writing the rest of deck cards to the log
+        logging.debug('\n Just checking how many cards left after cards added to hand:\n')
+        for card in deck.cards:
+            logging.debug(card)
+
+        print(f'{user}, hand value: {get_hand_value_user}')
+        print(f'{computer}, hand value: {get_hannd_value_computer}')
+
+        if get_hand_value_user == 21:
+            print(f"{user} wins.\n")
+            return
+        
+        if user.hit_or_stay(deck):
+            while computer.get_hand_value() < 17:
+                computer.add_card_to_hand(deck.deal_card())
+            print(f"{user}, hand value: {user.get_hand_value()}\n")
+            print(f"{computer}, hand value: {computer.get_hand_value()}\n")
+            if computer.get_hand_value() > 21:
+                print(f"Over 21! {user} wins.\n")
+            elif computer.get_hand_value() > user.get_hand_value():
+                print("Computer wins.\n")
+            elif computer.get_hand_value() == user.get_hand_value():
+                print("Tie!")
+            else:
+                print(f"{user} wins.\n")
+
+    except Exception as e:
+        logging.exception(e)
 
 if __name__ == '__main__':
-    #using logging to write to a file named "game.log"
-    logging.basicConfig(level=logging.DEBUG,filename='game.log', filemode='w', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', datefmt='%d/%m/%Y %H:%M:%S')
+    try:
+        # using logging to write to a file named "game.log"
+        logging.basicConfig(level=logging.DEBUG, filename='game.log', filemode='w', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', datefmt='%d/%m/%Y %H:%M:%S')
 
-    print('Welcome to Blackjack game!')
-    user_name = input('Enter your name: ')
-    answer = input('Do you want to play blackjack? (yes or no) \n')
-    
-    if answer.lower() == 'yes':
-        play_game()
-    elif answer.lower() == 'no':
-        print('Thanks for your time!')
-        logging.info('Person didnt play the game')
-    else:
-        pass
+        print('Welcome to Blackjack game!')
+        user_name = input('Enter your name: ')
+        answer = input('Do you want to play blackjack? (yes or no) \n')
+        
+        if answer.lower() == 'yes':
+            play_game()
+        elif answer.lower() == 'no':
+            print('Thanks for your time!')
+            logging.info('Person didnt play the game')
+        else:
+            raise ValueError('Invalid input. Please enter "yes" or "no".')
 
-#need to write a function to check if the user has won the game or not
-#need to make user to be able to hit or stay
-#need to update with error handling
+    except Exception as e:
+        print(f'An error occurred: {e}')
+        logging.error(f'An error occurred: {e}')
