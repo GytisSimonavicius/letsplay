@@ -3,7 +3,7 @@ import logging
 from cards import suits, ranks, card_values
 
 class Card:
-    def __init__(self, rank, suit):
+    def __init__(self, rank: str, suit: str):
         self.rank = rank
         self.suit = suit
         self.value = card_values[rank]
@@ -31,7 +31,7 @@ class Hand:
     def __init__(self):
         self.cards = []
 
-    def add_card(self, card):
+    def add_card(self, card: str):
         self.cards.append(card)
 
     def get_value(self):
@@ -46,29 +46,29 @@ class Hand:
         return ' and '.join(str(card) for card in self.cards)
 
 class Player:
-    def __init__(self, name):
+    def __init__(self, name: str):
         self.name = name
         self.hand = Hand()
 
-    def add_card_to_hand(self, card):
+    def add_card_to_hand(self, card: str):
         self.hand.add_card(card)
 
     def get_hand_value(self):
         return self.hand.get_value()
 
     def __str__(self):
-        return f"{self.name} hand: {self.hand}"
+        return f"\n{self.name} hand: {self.hand}"
 
 class User(Player):
-    def __init__(self, name):
+    def __init__(self, name: str):
         super().__init__(name)
     
-    def hit_or_stay(self, deck):
+    def hit_or_stay(self, deck: str):
         while True:
             decision = input("Do you want to hit or stay? \n")
             if decision.lower() == "hit":
                 self.add_card_to_hand(deck.deal_card())
-                print(f"{self}, hand value: {self.get_hand_value()}\n")
+                print(f"\n{self}, hand value: {self.get_hand_value()}\n")
                 if self.get_hand_value() > 21:
                     print("Over 21! Computer wins.\n")
                     return False
@@ -118,6 +118,10 @@ def play_game():
     print(f'{user}, hand value: {get_hand_value_user}')
     print(f'{computer}, hand value: {get_hannd_value_computer}')
 
+    if get_hand_value_user == 21:
+        print(f"{user} wins.\n")
+        return
+    
     if user.hit_or_stay(deck):
         while computer.get_hand_value() < 17:
             computer.add_card_to_hand(deck.deal_card())

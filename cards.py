@@ -16,3 +16,7 @@ card_values = {
     'King': 10,
     'Ace': 11
 }
+
+
+if __name__ == "__main__":
+    print('I am ruuning as the script')
