@@ -11,7 +11,7 @@ class Card:
         self.suit = suit
         self.value = card_values[rank]
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.rank} of {self.suit}"
 
 class Deck:
@@ -26,7 +26,7 @@ class Deck:
         random.shuffle(self.cards)
 
 # dealing card from the deck and after that we remove it from the deck
-    def deal_card(self):
+    def deal_card(self) -> Card:
         return self.cards.pop()
 
 #getting (player or oponent) hand from the deck
@@ -69,6 +69,9 @@ class User(Player):
     def hit_or_stay(self, deck: str):
         while True:
             try:
+                if self.get_hand_value() == 21:
+                    print(f" THATS BLACKJACK! {self.name} wins!")
+                    return False
                 decision = input("Do you want to hit or stay? \n")
                 if decision.lower() == "hit":
                     self.add_card_to_hand(deck.deal_card())
@@ -138,6 +141,8 @@ def play_game():
             print(f"{computer}, hand value: {computer.get_hand_value()}\n")
             if computer.get_hand_value() > 21:
                 print(f"Over 21! {user} wins.\n")
+            elif computer.get_hand_value == 21:
+                print(f"BLACK JACK. Computer wins.\n")
             elif computer.get_hand_value() > user.get_hand_value():
                 print("Computer wins.\n")
             elif computer.get_hand_value() == user.get_hand_value():
