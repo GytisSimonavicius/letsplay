@@ -76,7 +76,7 @@ class User(Player):
                 elif decision.lower() == "stay":
                     return True
                 else:
-                    print("Invalid input. Please enter 'hit' or 'stay'.\n")
+                    raise ValueError('Invalid input. Please enter \'hit\' or \'stay\'.\n')
             except Exception as e:
                 print(f'Error: {e}')
                 logging.error(f'An error occurred: {e}')
@@ -160,7 +160,7 @@ if __name__ == '__main__':
             print('Thanks for your time!')
             logging.info('Person didnt play the game')
         else:
-            raise ValueError('Invalid input. Please enter "yes" or "no".')
+            raise ValueError('Invalid input. Please enter \'yes\' or \'no\'.')
 
     except Exception as e:
         print(f'An error occurred: {e}')
