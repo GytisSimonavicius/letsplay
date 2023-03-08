@@ -2,6 +2,9 @@ import random
 import logging
 from cards import suits, ranks, card_values
 
+# using logging to write to a file named "game.log"
+logging.basicConfig(level=logging.DEBUG, filename='game.log', filemode='w', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', datefmt='%d/%m/%Y %H:%M:%S')
+
 class Card:
     def __init__(self, rank: str, suit: str):
         self.rank = rank
@@ -147,9 +150,6 @@ def play_game():
 
 if __name__ == '__main__':
     try:
-        # using logging to write to a file named "game.log"
-        logging.basicConfig(level=logging.DEBUG, filename='game.log', filemode='w', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', datefmt='%d/%m/%Y %H:%M:%S')
-
         print('Welcome to Blackjack game!')
         user_name = input('Enter your name: ')
         answer = input('Do you want to play blackjack? (yes or no) \n')
