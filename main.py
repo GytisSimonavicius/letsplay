@@ -23,16 +23,16 @@ class Deck:
                 self.cards.append(card)
 
     def shuffle(self):
-        random.shuffle(self.cards)
+        return random.shuffle(self.cards)
 
 # dealing card from the deck and after that we remove it from the deck
-    def deal_card(self) -> Card:
+    def deal_card(self):
         return self.cards.pop()
 
 #getting (player or oponent) hand from the deck
 class Hand:
     def __init__(self):
-        self.cards = []
+        self.cards: list = []
 
     def add_card(self, card: str):
         self.cards.append(card)
@@ -56,10 +56,10 @@ class Player:
     def add_card_to_hand(self, card: str):
         self.hand.add_card(card)
 
-    def get_hand_value(self):
+    def get_hand_value(self) -> int:
         return self.hand.get_value()
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"\n{self.name} hand: {self.hand}"
 
 class User(Player):
@@ -132,7 +132,6 @@ def play_game():
 
         if get_hand_value_user == 21:
             print(f"{user} wins.\n")
-            return
         
         if user.hit_or_stay(deck):
             while computer.get_hand_value() < 17:
