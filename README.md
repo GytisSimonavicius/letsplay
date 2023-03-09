@@ -1,4 +1,5 @@
-# This is a simple program about blackjack gamein Python. The program uses OO programming to define classes: Card, Deck, Hand, Player, User, and Computer. It also uses the logging module to write to a file named "game.log". #
+# This is a simple program about blackjack gamein Python. # 
+## The program uses OO programming to define classes: Card, Deck, Hand, Player, User, and Computer. It also uses the logging module to write to a file named "game.log". ##
 
 ## I use blackjack rules: https://www.cs.mcgill.ca/~rwest/wikispeedia/wpcd/wp/b/Blackjack.htm ##
 
