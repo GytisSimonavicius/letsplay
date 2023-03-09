@@ -99,33 +99,34 @@ def play_game():
 
         # writing the cards in the deck to the log
         for card in deck.cards:
-            logging.debug(card)
+            logging.info(card)
 
         deck.shuffle()
 
         # writing the shuffled deck to the log
-        logging.debug('\n  Deck after shuffling:\n')
+        logging.info('\n  Deck after shuffling:\n')
         for card in deck.cards:
-            logging.debug(card)
+            logging.info(card)
         
         user =  User(user_name)
         computer = Computer()
 
         card_count = 0
+
         for _ in range(2):
             card_count += 1
             user.add_card_to_hand(deck.deal_card())
-            logging.debug(f"{card_count} {user.name} card: {user.hand}")
+            logging.info(f"{card_count} {user.name} card: {user.hand}")
             computer.add_card_to_hand(deck.deal_card())
-            logging.debug(f"{card_count} computer card: {computer.hand}")
+            logging.info(f"{card_count} computer card: {computer.hand}")
                     
         get_hand_value_user = user.get_hand_value()
         get_hannd_value_computer = computer.get_hand_value()
 
         # writing the rest of deck cards to the log
-        logging.debug('\n Just checking how many cards left after cards added to hand:\n')
+        logging.info('\n Just checking how many cards left after cards added to hand:\n')
         for card in deck.cards:
-            logging.debug(card)
+            logging.info(card)
 
         print(f'{user}, hand value: {get_hand_value_user}')
         print(f'{computer}, hand value: {get_hannd_value_computer}')
